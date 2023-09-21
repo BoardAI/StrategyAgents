@@ -1,0 +1,15 @@
+
+## Usage
+Run the main.py file and select the Excel file when prompted. The application will generate a new Excel file named 'Negotiation_Strategy_Report.xlsx' with the calculated savings and new costs.
+
+## Contributing
+We welcome contributions from anyone. Please see our 'CONTRIBUTING.md' file for how to contribute to this project.
+
+## Support
+If you encounter any problems or have any questions, please open an issue on this repository.
+
+## Authors and Acknowledgement
+This project is developed and maintained by the ChatDev team. We would like to thank our customer for giving us the opportunity to work on this project.
+
+## License
+This project is licensed under the MIT License.

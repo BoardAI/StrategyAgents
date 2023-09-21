@@ -1,0 +1,86 @@
+{
+  "chain": [
+    {
+      "phase": "GoalSetting",
+      "phaseType": "SimplePhase",
+      "max_turn_step": 1,
+      "need_reflect": "False"
+    },
+    {
+      "phase": "MarketPlanning",
+      "phaseType": "SimplePhase",
+      "max_turn_step": 1,
+      "need_reflect": "False"
+    },
+    {
+      "phase": "ProductPlanning",
+      "phaseType": "SimplePhase",
+      "max_turn_step": 1,
+      "need_reflect": "False"
+    },
+    {
+      "phase": "SupplierPlanning",
+      "phaseType": "SimplePhase",
+      "max_turn_step": 1,
+      "need_reflect": "False"
+    },
+    {
+      "phase": "FinancePlanning",
+      "phaseType": "SimplePhase",
+      "max_turn_step": 1,
+      "need_reflect": "False"
+    },
+    {
+      "phase": "MarketResearch",
+      "phaseType": "SimplePhase",
+      "max_turn_step": 1,
+      "need_reflect": "False"
+    },
+    {
+      "phase": "ProductResearch",
+      "phaseType": "SimplePhase",
+      "max_turn_step": 1,
+      "need_reflect": "False"
+    },
+    {
+      "phase": "SupplierResearch",
+      "phaseType": "SimplePhase",
+      "max_turn_step": 1,
+      "need_reflect": "False"
+    },
+    {
+      "phase": "FinanceResearch",
+      "phaseType": "SimplePhase",
+      "max_turn_step": 1,
+      "need_reflect": "False"
+    },
+    {
+      "phase": "ContractAnalysis",
+      "phaseType": "SimplePhase",
+      "max_turn_step": 1,
+      "need_reflect": "False"
+    },
+    {
+      "phase": "StrategyPlanning",
+      "phaseType": "SimplePhase",
+      "max_turn_step": 1,
+      "need_reflect": "False"
+    }
+  ],
+  "recruitments": [
+    "Chief Executive Officer",
+    "Chief Procurement Officer",
+    "Market Expert",
+    "Product Expert",
+    "Supplier Expert",
+    "Finance Expert",
+    "Legal Expert",
+    "Strategy Expert",
+    "Counselor"
+  ],
+  "clear_structure": "True",
+  "brainstorming": "False",
+  "gui_design": "False",
+  "git_management": "False",
+  "self_improve": "False"
+}
