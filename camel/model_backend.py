@@ -18,7 +18,8 @@ import openai
 import tiktoken
 
 from camel.typing import ModelType
-from chatdev.utils import log_and_print_online
+from board.utils import log_and_print_online
+from board.tools import HFModelDownloadsTool, HFModelResearchTool, HFModelVisionTool
 
 
 class ModelBackend(ABC):
@@ -48,7 +49,8 @@ class OpenAIModel(ModelBackend):
         self.model_config_dict = model_config_dict
 
     def run(self, *args, **kwargs) -> Dict[str, Any]:
-        string = "\n".join([message["content"] for message in kwargs["messages"]])
+        string = "\n".join([message["content"]
+                           for message in kwargs["messages"]])
         encoding = tiktoken.encoding_for_model(self.model_type.value)
         num_prompt_tokens = len(encoding.encode(string))
         gap_between_send_receive = 15 * len(kwargs["messages"])
@@ -98,6 +100,66 @@ class StubModel(ModelBackend):
         )
 
 
+class OpenAIToolModel(ModelBackend):
+    r"""HuggingFace OpenAI Tool Agent in a unified ModelBackend interface."""
+
+    def __init__(self, model_type: ModelType, model_config_dict: Dict) -> None:
+        super().__init__()
+        self.model_type = model_type
+        self.model_config_dict = model_config_dict
+        self.tools = [HFModelDownloadsTool(), HFModelResearchTool(),
+                      HFModelVisionTool()]
+
+    def run(self, *args, **kwargs) -> Dict[str, Any]:
+        try:
+            # TODO: Support other tool agents
+            from transformers.tools import OpenAiAgent
+        except ImportError:
+            raise ValueError(
+                "Could not import transformers tool agents. "
+                "Please setup the environment with "
+                "pip install huggingface_hub==0.14.1 transformers==4.29.0 diffusers accelerate datasets torch soundfile sentencepiece opencv-python"
+            )
+        self.agent = OpenAiAgent(model=self.model_type.value,
+                                 additional_tools=self.tools)
+        # chat_prompt_template="",
+        # run_prompt_template="")
+        self.name = "Negotiations Tool Agent"
+        string = "\n".join([message["content"]
+                           for message in kwargs["messages"]])
+        encoding = tiktoken.encoding_for_model(self.model_type.value)
+        num_prompt_tokens = len(encoding.encode(string))
+        gap_between_send_receive = 15 * len(kwargs["messages"])
+        num_prompt_tokens += gap_between_send_receive
+
+        num_max_token_map = {
+            "gpt-3.5-turbo": 4096,
+            "gpt-3.5-turbo-16k": 16384,
+            "gpt-3.5-turbo-0613": 4096,
+            "gpt-3.5-turbo-16k-0613": 16384,
+            "gpt-4": 8192,
+            "gpt-4-0613": 8192,
+            "gpt-4-32k": 32768,
+        }
+        num_max_token = num_max_token_map[self.model_type.value]
+        num_max_completion_tokens = num_max_token - num_prompt_tokens
+        self.model_config_dict['max_tokens'] = num_max_completion_tokens
+        print(self.model_config_dict)
+        task = kwargs["messages"][-1]["content"]
+        response = self.agent.chat(task=task, *args, **kwargs)
+        # response = openai.ChatCompletion.create(*args, **kwargs,
+        #                                         model=self.model_type.value,
+        #                                         **self.model_config_dict)
+
+        log_and_print_online(
+            "**[OpenAI_Usage_Info Receive]**\nprompt_tokens: {}\ncompletion_tokens: {}\ntotal_tokens: {}\n".format(
+                response["usage"]["prompt_tokens"], response["usage"]["completion_tokens"],
+                response["usage"]["total_tokens"]))
+        if not isinstance(response, Dict):
+            raise RuntimeError("Unexpected return from OpenAI API")
+        return response
+
+
 class ModelFactory:
     r"""Factory of backend models.
 
@@ -106,14 +168,19 @@ class ModelFactory:
     """
 
     @staticmethod
-    def create(model_type: ModelType, model_config_dict: Dict) -> ModelBackend:
+    def create(model_type: ModelType,
+               model_config_dict: Dict,
+               tools: bool = False) -> ModelBackend:
         default_model_type = ModelType.GPT_3_5_TURBO
 
         if model_type in {
             ModelType.GPT_3_5_TURBO, ModelType.GPT_4, ModelType.GPT_4_32k,
             None
         }:
-            model_class = OpenAIModel
+            if tools:
+                model_class = OpenAIToolModel
+            else:
+                model_class = OpenAIModel
         elif model_type == ModelType.STUB:
             model_class = StubModel
         else:

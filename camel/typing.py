@@ -21,7 +21,7 @@ class TaskType(Enum):
     TRANSLATION = "translation"
     EVALUATION = "evaluation"
     SOLUTION_EXTRACTION = "solution_extraction"
-    CHATDEV = "chat_dev"
+    STRATEGY = "strategy"
     DEFAULT = "default"
 
 
@@ -31,16 +31,16 @@ class RoleType(Enum):
     CRITIC = "critic"
     EMBODIMENT = "embodiment"
     DEFAULT = "default"
-    CHATDEV = "AgentTech"
-    CHATDEV_COUNSELOR = "counselor"
-    CHATDEV_CEO = "chief executive officer (CEO)"
-    CHATDEV_CHRO = "chief human resource officer (CHRO)"
-    CHATDEV_CPO = "chief product officer (CPO)"
-    CHATDEV_CTO = "chief technology officer (CTO)"
-    CHATDEV_PROGRAMMER = "programmer"
-    CHATDEV_REVIEWER = "code reviewer"
-    CHATDEV_TESTER = "software test engineer"
-    CHATDEV_CCO = "chief creative officer (CCO)"
+    BOARD = "AgentTech"
+    BOARD_COUNSELOR = "counselor"
+    BOARD_CEO = "chief executive officer (CEO)"
+    BOARD_CHRO = "chief human resource officer (CHRO)"
+    BOARD_CPO = "chief product officer (CPO)"
+    BOARD_CTO = "chief technology officer (CTO)"
+    BOARD_PROGRAMMER = "programmer"
+    BOARD_REVIEWER = "code reviewer"
+    BOARD_TESTER = "software test engineer"
+    BOARD_CCO = "chief creative officer (CCO)"
 
 
 class ModelType(Enum):
@@ -48,6 +48,7 @@ class ModelType(Enum):
     GPT_4 = "gpt-4"
     GPT_4_32k = "gpt-4-32k"
     STUB = "stub"
+    TOOLS = "tools"
 
     @property
     def value_for_tiktoken(self):

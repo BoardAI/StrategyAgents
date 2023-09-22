@@ -50,12 +50,15 @@ class ChatAgentResponse:
     @property
     def msg(self):
         if self.terminated:
-            raise RuntimeError("error in ChatAgentResponse, info:{}".format(str(self.info)))
+            raise RuntimeError(
+                "error in ChatAgentResponse, info:{}".format(str(self.info)))
         if len(self.msgs) > 1:
-            raise RuntimeError("Property msg is only available for a single message in msgs")
+            raise RuntimeError(
+                "Property msg is only available for a single message in msgs")
         elif len(self.msgs) == 0:
             if len(self.info) > 0:
-                raise RuntimeError("Empty msgs in ChatAgentResponse, info:{}".format(str(self.info)))
+                raise RuntimeError(
+                    "Empty msgs in ChatAgentResponse, info:{}".format(str(self.info)))
             else:
                 # raise RuntimeError("Known issue that msgs is empty and there is no error info, to be fix")
                 return None
@@ -82,16 +85,21 @@ class ChatAgent(BaseAgent):
             model: Optional[ModelType] = None,
             model_config: Optional[Any] = None,
             message_window_size: Optional[int] = None,
+            tools: bool = False
     ) -> None:
 
         self.system_message: SystemMessage = system_message
         self.role_name: str = system_message.role_name
         self.role_type: RoleType = system_message.role_type
-        self.model: ModelType = (model if model is not None else ModelType.GPT_3_5_TURBO)
+        self.tools: bool = tools
+        self.model: ModelType = (
+            model if model is not None else ModelType.GPT_3_5_TURBO)
         self.model_config: ChatGPTConfig = model_config or ChatGPTConfig()
         self.model_token_limit: int = get_model_token_limit(self.model)
         self.message_window_size: Optional[int] = message_window_size
-        self.model_backend: ModelBackend = ModelFactory.create(self.model, self.model_config.__dict__)
+        self.model_backend: ModelBackend = ModelFactory.create(self.model,
+                                                               self.model_config.__dict__,
+                                                               self.tools)
         self.terminated: bool = False
         self.info: bool = False
         self.init_messages()
@@ -199,7 +207,8 @@ class ChatAgent(BaseAgent):
             info = self.get_info(
                 response["id"],
                 response["usage"],
-                [str(choice["finish_reason"]) for choice in response["choices"]],
+                [str(choice["finish_reason"])
+                 for choice in response["choices"]],
                 num_tokens,
             )
 

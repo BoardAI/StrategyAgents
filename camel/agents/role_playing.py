@@ -136,7 +136,7 @@ class RolePlaying:
         sys_msg_meta_dicts = [
             dict(strategy_prompt=strategy_prompt_template, task=task_prompt)] * 2
         if (extend_sys_msg_meta_dicts is None and self.task_type in [TaskType.AI_SOCIETY, TaskType.MISALIGNMENT,
-                                                                     TaskType.CHATDEV]):
+                                                                     TaskType.STRATEGY]):
             extend_sys_msg_meta_dicts = [
                 dict(assistant_role=assistant_role_name, user_role=user_role_name)] * 2
         if extend_sys_msg_meta_dicts is not None:
@@ -152,7 +152,8 @@ class RolePlaying:
                                           content=user_role_prompt.format(**sys_msg_meta_dicts[1]))
 
         self.assistant_agent: ChatAgent = ChatAgent(self.assistant_sys_msg, model_type,
-                                                    **(assistant_agent_kwargs or {}), )
+                                                    **(assistant_agent_kwargs or {}),
+                                                    tools=True)
         self.user_agent: ChatAgent = ChatAgent(
             self.user_sys_msg, model_type, **(user_agent_kwargs or {}), )
 

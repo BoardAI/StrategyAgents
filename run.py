@@ -11,7 +11,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 # =========== Copyright 2023 @ CAMEL-AI.org. All Rights Reserved. ===========
-from chatdev.chat_chain import ChatChain
+from board.chat_chain import ChatChain
 import argparse
 import logging
 import os
@@ -59,17 +59,17 @@ def get_config(company):
 parser = argparse.ArgumentParser(description='argparse')
 parser.add_argument('--config', type=str, default="Board",
                     help="Name of config, which is used to load configuration under CompanyConfig/")
-parser.add_argument('--org', type=str, default="DefaultOrganization",
-                    help="Name of organization, your software will be generated in WareHouse/name_org_timestamp")
-parser.add_argument('--task', type=str, default="Develop a basic Gomoku game.",
-                    help="Prompt of software")
-parser.add_argument('--name', type=str, default="Gomoku",
-                    help="Name of software, your software will be generated in WareHouse/name_org_timestamp")
+parser.add_argument('--org', type=str, default="Board",
+                    help="Name of organization, your report will be generated in WareHouse/name_org_timestamp")
+parser.add_argument('--task', type=str, default="Generate a negotiation strategy report",
+                    help="Prompt of task")
+parser.add_argument('--name', type=str, default="Strategy",
+                    help="Name of project, your report will be generated in WareHouse/name_org_timestamp")
 parser.add_argument('--model', type=str, default="GPT_3_5_TURBO",
                     help="GPT Model, choose from {'GPT_3_5_TURBO','GPT_4','GPT_4_32K'}")
 args = parser.parse_args()
 
-# Start ChatDev
+# Start Board
 
 # ----------------------------------------
 #          Init ChatChain
