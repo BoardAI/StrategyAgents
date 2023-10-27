@@ -310,6 +310,7 @@ then you should return a message in a format like \"<INFO> revised_version_of_th
             task_prompt="Do prompt engineering on user query",
             with_task_specify=False,
             model_type=self.model_type,
+            tools=True
         )
 
         # log_and_print_online("System", role_play_session.assistant_sys_msg)

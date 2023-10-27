@@ -105,6 +105,7 @@ class Phase(ABC):
             task_type=task_type,
             with_task_specify=with_task_specify,
             model_type=model_type,
+            tools=True
         )
 
         # log_and_print_online("System", role_play_session.assistant_sys_msg)

@@ -23,7 +23,8 @@ from camel.agents.chat_agent import ChatAgentResponse
 from camel.messages import ChatMessage, UserChatMessage
 from camel.messages import SystemMessage
 from camel.typing import ModelType, RoleType, TaskType, PhaseType
-from chatdev.utils import log_arguments, log_and_print_online
+from board.tools import HFModelSearchTool, HFModelWebScrapeTool
+from board.utils import log_arguments, log_and_print_online
 
 
 @log_arguments
@@ -90,12 +91,14 @@ class RolePlaying:
             sys_msg_generator_kwargs: Optional[Dict] = None,
             extend_sys_msg_meta_dicts: Optional[List[Dict]] = None,
             extend_task_specify_meta_dict: Optional[Dict] = None,
+            tools: bool = False
     ) -> None:
         self.with_task_specify = with_task_specify
         self.with_task_planner = with_task_planner
         self.with_critic_in_the_loop = with_critic_in_the_loop
         self.model_type = model_type
         self.task_type = task_type
+        self.tools = tools
 
         if with_task_specify:
             task_specify_meta_dict = dict()
@@ -153,7 +156,7 @@ class RolePlaying:
 
         self.assistant_agent: ChatAgent = ChatAgent(self.assistant_sys_msg, model_type,
                                                     **(assistant_agent_kwargs or {}),
-                                                    tools=True)
+                                                    tools=self.tools)
         self.user_agent: ChatAgent = ChatAgent(
             self.user_sys_msg, model_type, **(user_agent_kwargs or {}), )
 

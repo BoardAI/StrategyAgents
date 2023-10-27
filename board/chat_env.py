@@ -93,3 +93,41 @@ class ChatEnv:
 
     def get_requirements(self) -> str:
         return self.requirements._get_docs()
+
+    def write_meta(self) -> None:
+        directory = self.env_dict['directory']
+
+        if not os.path.exists(directory):
+            os.mkdir(directory)
+            print("{} Created.".format(directory))
+
+        meta_filename = "meta.txt"
+        with open(os.path.join(directory, meta_filename), "w", encoding="utf-8") as writer:
+            writer.write("{}:\n{}\n\n".format(
+                "Task", self.env_dict['task_prompt']))
+            writer.write("{}:\n{}\n\n".format("Config", self.config.__str__()))
+            writer.write("{}:\n{}\n\n".format(
+                "Roster", ", ".join(self.roster.agents)))
+            writer.write("{}:\n{}\n\n".format(
+                "Vision", self.env_dict['vision']))
+            writer.write("{}:\n{}\n\n".format(
+                "Market Plan", self.env_dict['market_plan']))
+            writer.write("{}:\n{}\n\n".format(
+                "Product Plan", self.env_dict['product_plan']))
+            writer.write("{}:\n{}\n\n".format(
+                "Supplier Plan", self.env_dict['supplier_plan']))
+            writer.write("{}:\n{}\n\n".format(
+                "Financial Plan", self.env_dict['financial_plan']))
+            writer.write("{}:\n{}\n\n".format(
+                "Market Research Summary", self.env_dict['market_research_summary']))
+            writer.write("{}:\n{}\n\n".format(
+                "Product Research Summary", self.env_dict['product_research_summary']))
+            writer.write("{}:\n{}\n\n".format(
+                "Supplier Research Summary", self.env_dict['supplier_research_summary']))
+            writer.write("{}:\n{}\n\n".format(
+                "Financial Research Summary", self.env_dict['financial_research_summary']))
+            writer.write("{}:\n{}\n\n".format(
+                "Legal Concerns", self.env_dict['legal_concerns']))
+            writer.write("{}:\n{}\n\n".format(
+                "Strategy Considerations", self.env_dict['strategy_considerations']))
+        print(os.path.join(directory, meta_filename), "Wrote")
